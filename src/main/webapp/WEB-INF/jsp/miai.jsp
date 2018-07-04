@@ -74,7 +74,7 @@
                 <div><label>性别:</label><input id="sex" name="sex" type="text" placeholder ="男/女"/></div>
                 <div><label>年龄:</label><input id="age" name="age"type="text" placeholder ="今年多少岁"/></div>
                 <div><label>身高:</label><input name="height" type="text" placeholder="cm"/></div>
-                <div><label>上传头像:</label><input type="file" name="file1" value="点击open选择"/></div>
+                <div><label>上传头像:</label><input id="via" type="file" name="via" onchange="bindAvatar1()" value="点击open选择"/></div>
                 <div><label>微信号:</label><input name="wechat" type="text"/></div>
                 <div><label>电话:</label><input type="tel" name="iphone"/></div>
                 <div><label>地区:</label><input class="input" name="city" id="city" type="text" placeholder="点击选择地区" autocomplete="off" readonly="true"/></div>
@@ -121,9 +121,11 @@
 //                    //ajax: { url:'validate.php' }
 //                }
 //            },
-            'file': {
+            'via': {
                 filters: 'extension',
-                data: { extension: ['jpg'] || ['bmp'] || ['gif'] || ['png']}
+                data: {
+                    extension: ['jpg'||'bmp' || 'gif' || 'png']
+                }
             },
             'comments': {
                 filters: 'min max',
@@ -165,6 +167,40 @@
     $("s").click(function (e) {
         SelCity(document.getElementById("city"),e);
     });
+</script>
+
+<script type="text/javascript">
+    /*Ajax上传至后台并返回图片的url*/
+    var UpLoad = false;
+    function bindAvatar1() {
+        $("#via").change(function () {
+            var user = $("input[name='name']").val();
+            if (user == null || user == ""){
+                if(UpLoad == true){
+                    return;
+                }else {
+                    return alert("请按顺序填写,重新选择照片")
+                }
+            }
+            var csrf = $("input[name='file1']").val();
+            var formData=new FormData();
+            formData.append("file1",csrf);
+            formData.append("user",user);
+            formData.append('avatar', $("#via")[0].files[0]);  /*获取上传的图片对象*/
+            $.ajax({
+                url: '/upload2',
+                type: 'POST',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (args) {
+                    UpLoad = true;
+                    console.log(args);  /*服务器端的图片地址*/
+                    $("#via").val(args);  /*将服务端的图片url赋值给form表单的隐藏input标签*/
+                }
+            })
+        })
+    }
 </script>
 <div style="text-align:center;">
     <p>来源：<a href="http://www.mycodes.net/" title="源码之家" target="_blank">源码之家</a></p>
