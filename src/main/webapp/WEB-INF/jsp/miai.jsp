@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Admin
@@ -6,6 +7,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:include page="common.jsp" flush="true"/>
 <!DOCTYPE html>
 <!--[if IE 8 ]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9 ]> <html lang="en" class="ie9"> <![endif]-->
@@ -17,17 +19,17 @@
 
 
     <!--[if lt IE 9]>
-    <script src="/js/html5shiv.js"></script>
+    <script src="${ctx}/js/html5shiv.js"></script>
     <![endif]-->
 
-    <link href="/css/normalize.css" rel="stylesheet"/>
-    <link href="/css/jquery-ui.css" rel="stylesheet"/>
-    <link href="/css/jquery.idealforms.min.css" rel="stylesheet" media="screen"/>
+    <link href="${ctx}/css/normalize.css" rel="stylesheet"/>
+    <link href="${ctx}/css/jquery-ui.css" rel="stylesheet"/>
+    <link href="${ctx}/css/jquery.idealforms.min.css" rel="stylesheet" media="screen"/>
 
     <style type="text/css">
         body{
             font:normal 15px/1.5 Arial, Helvetica, Free Sans, sans-serif;
-            color: #222;background:url(/images/pattern.png);
+            color: #222;background:url(${ctx}/images/pattern.png);
             overflow-y:scroll;
             padding:60px 0 0 0;
         }
@@ -97,14 +99,14 @@
 </div>
 
 
-<script type="text/javascript" src="/js/jquery-1.8.2.min.js"></script>
-<script type="text/javascript" src="/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="/js/jquery.idealforms.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/jquery.idealforms.js"></script>
 
 <%--<script type="text/javascript" src="/js/distpicker/jquery.min.js"></script>--%>
-<script type="text/javascript" src="/js/distpicker/Popt.js"></script>
-<script type="text/javascript" src="/js/distpicker/city.json.js"></script>
-<script type="text/javascript" src="/js/distpicker/citySet.js"></script>
+<script type="text/javascript" src="${ctx}/js/distpicker/Popt.js"></script>
+<script type="text/javascript" src="${ctx}/js/distpicker/city.json.js"></script>
+<script type="text/javascript" src="${ctx}/js/distpicker/citySet.js"></script>
 
 
 <script type="text/javascript">
