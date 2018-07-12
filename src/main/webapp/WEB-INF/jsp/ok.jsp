@@ -11,6 +11,6 @@
     <title>ok</title>
 </head>
 <body>
-<h1 align="center">上传文件成功!</h1>
+<h1 align="center">上传资料成功!</h1>
 </body>
 </html>

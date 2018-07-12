@@ -1,4 +1,3 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Admin
@@ -7,7 +6,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:include page="common.jsp" flush="true"/>
 <!DOCTYPE html>
 <!--[if IE 8 ]> <html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9 ]> <html lang="en" class="ie9"> <![endif]-->
@@ -19,17 +17,17 @@
 
 
     <!--[if lt IE 9]>
-    <script src="${ctx}/js/html5shiv.js"></script>
+    <script src="js/html5shiv.js"></script>
     <![endif]-->
 
-    <link href="${ctx}/css/normalize.css" rel="stylesheet"/>
-    <link href="${ctx}/css/jquery-ui.css" rel="stylesheet"/>
-    <link href="${ctx}/css/jquery.idealforms.min.css" rel="stylesheet" media="screen"/>
+    <link href="css/normalize.css" rel="stylesheet"/>
+    <link href="css/jquery-ui.css" rel="stylesheet"/>
+    <link href="css/jquery.idealforms.min.css" rel="stylesheet" media="screen"/>
 
     <style type="text/css">
         body{
             font:normal 15px/1.5 Arial, Helvetica, Free Sans, sans-serif;
-            color: #222;background:url(${ctx}/images/pattern.png);
+            color: #222;background:url(images/pattern.png);
             overflow-y:scroll;
             padding:60px 0 0 0;
         }
@@ -67,8 +65,7 @@
     <div class="eightcol last">
 
         <!-- Begin Form -->
-
-        <form id="my-form" method="get" action="/addmiai">
+        <form id="my-form" method="get" action="/proxa/addmiai">
 
             <section name="正确填写资料">
 
@@ -76,10 +73,10 @@
                 <div><label>性别:</label><input id="sex" name="sex" type="text" placeholder ="男/女"/></div>
                 <div><label>年龄:</label><input id="age" name="age"type="text" placeholder ="今年多少岁"/></div>
                 <div><label>身高:</label><input name="height" type="text" placeholder="cm"/></div>
-                <div><label>上传头像:</label><input id="via" type="file" name="via" onchange="bindAvatar1()" value="点击open选择"/></div>
+                <div><label>上传头像:</label><input id="via" name="via" onchange="bindAvatar1()" type="file"/></div>
                 <div><label>微信号:</label><input name="wechat" type="text"/></div>
                 <div><label>电话:</label><input type="tel" name="iphone"/></div>
-                <div><label>地区:</label><input class="input" name="city" id="city" type="text" placeholder="点击选择地区" autocomplete="off" readonly="true"/></div>
+                <div><label>地区:</label><input class="input" name="city" id="city" type="text" placeholder="请选择" autocomplete="off" readonly="true"/></div>
                 <div><label>备注:</label><textarea  name="remarks"></textarea ></div>
             </section>
 
@@ -99,14 +96,14 @@
 </div>
 
 
-<script type="text/javascript" src="${ctx}/js/jquery-1.8.2.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery-ui.min.js"></script>
-<script type="text/javascript" src="${ctx}/js/jquery.idealforms.js"></script>
+<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui.min.js"></script>
+<script type="text/javascript" src="js/jquery.idealforms.js"></script>
 
 <%--<script type="text/javascript" src="/js/distpicker/jquery.min.js"></script>--%>
-<script type="text/javascript" src="${ctx}/js/distpicker/Popt.js"></script>
-<script type="text/javascript" src="${ctx}/js/distpicker/city.json.js"></script>
-<script type="text/javascript" src="${ctx}/js/distpicker/citySet.js"></script>
+<script type="text/javascript" src="js/distpicker/Popt.js"></script>
+<script type="text/javascript" src="js/distpicker/city.json.js"></script>
+<script type="text/javascript" src="js/distpicker/citySet.js"></script>
 
 
 <script type="text/javascript">
@@ -173,32 +170,24 @@
 
 <script type="text/javascript">
     /*Ajax上传至后台并返回图片的url*/
-    var UpLoad = false;
     function bindAvatar1() {
         $("#via").change(function () {
-            var user = $("input[name='name']").val();
-            if (user == null || user == ""){
-                if(UpLoad == true){
-                    return;
-                }else {
-                    return alert("请按顺序填写,重新选择照片")
-                }
-            }
-            var csrf = $("input[name='file1']").val();
+            var user = $("input[name='user']").val();
+            var csrf = $("input[name='csrfmiddlewaretoken']").val();
             var formData=new FormData();
-            formData.append("file1",csrf);
             formData.append("user",user);
-            formData.append('avatar', $("#via")[0].files[0]);  /*获取上传的图片对象*/
+            formData.append("csrfmiddlewaretoken",csrf);
+            formData.append('avatar', $("#avatarSlect")[0].files[0]);  /*获取上传的图片对象*/
             $.ajax({
-                url: '/upload2',
+                url: '/proxa/upload2',
                 type: 'POST',
                 data: formData,
                 contentType: false,
                 processData: false,
                 success: function (args) {
-                    UpLoad = true;
                     console.log(args);  /*服务器端的图片地址*/
-                    $("#via").val(args);  /*将服务端的图片url赋值给form表单的隐藏input标签*/
+                    $("#avatarPreview").attr('src','/'+args);  /*预览图片*/
+                    $("#avatar").val('/'+args);  /*将服务端的图片url赋值给form表单的隐藏input标签*/
                 }
             })
         })
