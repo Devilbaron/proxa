@@ -27,41 +27,23 @@ public class MiaiController {
     @Autowired
     CommonsMultipartResolver multipartResolver;
 
-    @RequestMapping(value = "/addmiai", method = RequestMethod.GET)
-    private String addmiai(HttpServletRequest request,HttpServletResponse response,Model model,User user) {
+    @RequestMapping("/miai")
+    public String miaiIndex(){
+        return "miai";
+    }
+
+    @RequestMapping(value = "/addmiai",method = RequestMethod.GET)
+    public String addmiai(Model model,User user){
         //保存用户数据
         try {
             iUserService.addMiaiUser(user);
         }catch (Exception ex){
             ex.printStackTrace();
+            return "no";
         }
-        return "list";// WEB-INF/jsp/"list".jsp
+        return "ok";
     }
-
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    private String list(Model model,User user) {
-        try {
-            iUserService.queryAll();
-        }catch (Exception ex){
-            ex.printStackTrace();
-        }
-//        List<User> list = userService.(user);
-//        model.addAttribute("list", list);
-        return "list";// WEB-INF/jsp/"list".jsp
-    }
-
-    @RequestMapping(value = "/miai", method = RequestMethod.GET)
-    private String miai(Model model,User user) {
-
-        return "miai";// WEB-INF/jsp/"list".jsp
-    }
-
-    @RequestMapping(value = "/upimage", method = RequestMethod.GET)
-    private String upimage(){
-        return "upimage";// WEB-INF/jsp/"list".jsp
-    }
-
-    @RequestMapping("/upload2"  )
+    @RequestMapping("/upload2")
     public String upload2(HttpServletRequest request,HttpServletResponse response) throws IllegalStateException, IOException {
 
         String path="";
