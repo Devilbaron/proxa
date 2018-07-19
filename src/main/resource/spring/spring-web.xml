@@ -21,9 +21,11 @@
       (1)加入对静态资源的处理：js,gif,png
       (2)允许使用"/"做整体映射
    -->
+  <mvc:resources location="/WEB-INF/images/Picture/" mapping="headimg/**"/>
   <mvc:resources location="/WEB-INF/images/" mapping="images/**"/>
   <mvc:resources location="/WEB-INF/js/" mapping="js/**"/>
   <mvc:resources location="/WEB-INF/css/" mapping="css/**"/>
+
 
   <!-- 3.配置jsp 显示ViewResolver -->
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
