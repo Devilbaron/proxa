@@ -12,5 +12,7 @@
 </head>
 <body>
     <h1>资料保存失败</h1>
+    <h1>${content}</h1>
+    <a href="miai">返回填写资料</a>
 </body>
 </html>

@@ -69,15 +69,15 @@
 
             <section name="正确填写资料">
 
-                <div><label>姓名:</label><input id="username" name="name" type="text" placeholder ="请填写您的姓名"/></div>
-                <div><label>性别:</label><input id="sex" name="sex" type="text" placeholder ="男/女"/></div>
-                <div><label>年龄:</label><input id="age" name="age"type="text" placeholder ="今年多少岁"/></div>
-                <div><label>身高:</label><input name="height" type="text" placeholder="cm"/></div>
-                <div><label>上传头像:</label><input id="via" name="via" onchange="bindAvatar1()" type="file"/></div>
-                <div><label>微信号:</label><input name="wechat" type="text"/></div>
-                <div><label>电话:</label><input type="tel" name="iphone"/></div>
-                <div><label>地区:</label><input class="input" name="city" id="city" type="text" placeholder="请选择" autocomplete="off" readonly="true"/></div>
-                <div><label>备注:</label><textarea  name="remarks"></textarea ></div>
+                <div><label>姓名:</label><input id="user" name="name" type="text" placeholder ="请填写您的姓名" required="required"/></div>
+                <div><label>性别:</label><input id="sex" name="sex" type="text" placeholder ="男/女" required="required"/></div>
+                <div><label>年龄:</label><input id="age" name="age"type="text" placeholder ="今年多少岁" required="required"/></div>
+                <div><label>身高:</label><input name="height" type="text" placeholder="cm" required="required"/></div>
+                <div><label>上传头像:</label><input id="via" name="via" onchange="bindAvatar1()" type="file" required="required"/></div>
+                <div><label>微信号:</label><input name="wechat" type="text" required="required"/></div>
+                <div><label>电话:</label><input type="tel" name="iphone" placeholder="非必填"/></div>
+                <div><label>地区:</label><input class="input" name="city" id="city" type="text" placeholder="点击快捷选择" autocomplete="off" readonly="true" required="required"/></div>
+                <div><label>备注:</label><textarea  name="remarks" placeholder="择偶要求"></textarea ></div>
             </section>
 
             <div><hr/></div>
@@ -120,12 +120,12 @@
 //                    //ajax: { url:'validate.php' }
 //                }
 //            },
-            'via': {
-                filters: 'extension',
-                data: {
-                    extension: ['jpg'||'bmp' || 'gif' || 'png']
-                }
-            },
+//             'via': {
+//                 filters: 'extension',
+//                 data: {
+//                     extension: ['jpg'||'bmp' || 'gif' || 'png']
+//                 }
+//             },
             'comments': {
                 filters: 'min max',
                 data: { min: 50, max: 200 }
@@ -172,12 +172,12 @@
     /*Ajax上传至后台并返回图片的url*/
     function bindAvatar1() {
         $("#via").change(function () {
-            var user = $("input[name='user']").val();
+            var user = $("input[name='name']").val();
             var csrf = $("input[name='csrfmiddlewaretoken']").val();
             var formData=new FormData();
             formData.append("user",user);
             formData.append("csrfmiddlewaretoken",csrf);
-            formData.append('avatar', $("#avatarSlect")[0].files[0]);  /*获取上传的图片对象*/
+            formData.append('via', $("#via")[0].files[0]);  /*获取上传的图片对象*/
             $.ajax({
                 url: '/proxa/upload2',
                 type: 'POST',
