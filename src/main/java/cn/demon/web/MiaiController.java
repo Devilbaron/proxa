@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 @Controller
 public class MiaiController {
@@ -33,9 +36,15 @@ public class MiaiController {
     }
 
     @RequestMapping(value = "/addmiai",method = RequestMethod.GET)
-    public String addmiai(Model model,User user){
+    public String addmiai(HttpServletRequest request,HttpServletResponse response,Model model,User user){
         //保存用户数据
         try {
+            for (User user1:iUserService.queryAll()){
+                if (user1.getName().equals(user.getName())){
+                    model.addAttribute("content","请重新输入姓名 并选择头像");
+                    return "no";
+                }
+            };
             iUserService.addMiaiUser(user);
         }catch (Exception ex){
             ex.printStackTrace();
@@ -43,11 +52,29 @@ public class MiaiController {
         }
         return "ok";
     }
+    @RequestMapping("/upload")
+    public String upload(){
+        System.out.println("upload");
+        return "";
+    }
+
+    @RequestMapping("/miaiList")
+    public String miaiList(Model model){
+        List<User> miaiList = iUserService.queryAll();
+        model.addAttribute("miaiList",miaiList);
+        return "list";
+    }
+
     @RequestMapping("/upload2")
     public String upload2(HttpServletRequest request,HttpServletResponse response) throws IllegalStateException, IOException {
 
         String path="";
         String user = request.getParameter("user");
+        for (User user1:iUserService.queryAll()){
+            if (user1.getName().equals(user)){
+                return null;
+            }
+        };
         //判断 request 是否有文件上传,即多部分请求
         if (multipartResolver.isMultipart(request)) {
             //转换成多部分request
@@ -67,13 +94,13 @@ public class MiaiController {
                         System.out.println(myFileName);
                         System.out.println(user);
                         //重命名上传后的文件名
-                        String fileName = user + "_" + file.getOriginalFilename();
+                        String fileName = user + "_" + datatime() + "." + file.getOriginalFilename().split("\\.")[1];/*file.getOriginalFilename();*/
                         //定义上传路径
 //                        String path = "H:/" + fileName;
-                        path = request.getSession().getServletContext().getRealPath("/WEB-INF/Picture/") + fileName;
+                        path = request.getSession().getServletContext().getRealPath("/WEB-INF/images/Picture/") + fileName;
 
                         //检查路径存在
-                        File urlpath = new File(request.getSession().getServletContext().getRealPath("/WEB-INF/Picture"));
+                        File urlpath = new File(request.getSession().getServletContext().getRealPath("/WEB-INF/images/Picture/"));
                         if(!urlpath.exists())
                         {
                             System.out.println("路径不存在创建");
@@ -100,5 +127,13 @@ public class MiaiController {
             }
         }
         return path.toString();
+    }
+
+    private String datatime(){
+        Date d = new Date();
+        System.out.println(d);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")/* HH:mm:ss*/;
+        String dateNowStr = sdf.format(d);
+        return dateNowStr;
     }
 }
